@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text ,View, StyleSheet , Button } from 'react-native';
-import { Constants } from 'expo';
+import Constants from 'expo-constants';
 
 // AdMob
 import {
@@ -12,16 +12,38 @@ import {
 
 export default class App extends Component {
 
+  bannerError = () => {
+    console.log('banner ad not loading')
+  }
+
+  bannerAdReceived = () => {
+    console.log('banner ad received')
+  }
+
   showInterstitial = async () => {
-    AdMobInterstitial.setAdUnitID('ca-app-pub-8799450118077071/8919786052'); // Test ID, Replace with your-admob-unit-id
-    await AdMobInterstitial.requestAdAsync();
-    await AdMobInterstitial.showAdAsync();
+    AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712'); // Test ID, Replace with your-admob-unit-id
+    
+    try{
+      await AdMobInterstitial.requestAdAsync();
+      await AdMobInterstitial.showAdAsync();
+    }
+    catch(e){
+      console.log(e);
+    }
+
+    
   }
 
   showRewarded = async () => {
-    AdMobRewarded.setAdUnitID('ca-app-pub-8799450118077071/1310433933'); // Test ID, Replace with your-admob-unit-id
-    await AdMobRewarded.requestAdAsync();
-    await AdMobRewarded.showAdAsync();
+    AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917'); // Test ID, Replace with your-admob-unit-id
+    
+    try{
+      await AdMobRewarded.requestAdAsync();
+      await AdMobRewarded.showAdAsync();
+    }
+    catch(e){
+      console.log(e);
+    }
   }
 
   render() {
@@ -44,8 +66,15 @@ export default class App extends Component {
 
                 <AdMobBanner style={styles.bannerAd}
                 bannerSize="fullBanner"
-                adUnitID="ca-app-pub-8799450118077071/5204311445" // Test ID, Replace with your-admob-unit-id
-                onDidFailToReceiveAdWithError={this.bannerError} />
+                adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                onDidFailToReceiveAdWithError={this.bannerError}
+                onAdViewDidReceiveAd = {this.bannerAdReceived} />
+
+                <PublisherBanner
+                 bannerSize="mediumRectangle"
+                 adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                 onDidFailToReceiveAdWithError={this.bannerError}
+                 onAdViewDidReceiveAd = {this.bannerAdReceived} />
                 
           </View>
     );
